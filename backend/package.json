@@ -1,0 +1,23 @@
+{
+  "name": "galaxycoin-backend",
+  "version": "1.0.0",
+  "description": "GalaxyCoin backend server",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:clean": "rimraf dist && tsc",
+    "start": "npm run build && node dist/index.js",
+    "serve": "node dist/index.js",
+    "dev": "tsc --watch",
+    "compile": "npm run build:clean"
+  },
+  "dependencies": {
+    "typescript": "^5.8.3",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/ws": "^8.5.13",
+    "rimraf": "^6.0.1"
+  }
+}
