@@ -1,6 +1,6 @@
 import { WebSocketServer } from 'ws';
 
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ port: 8081 });
 
 wss.on('connection', function connection(ws) {
   ws.on('error', console.error);
@@ -12,4 +12,4 @@ wss.on('connection', function connection(ws) {
   ws.send('something');
 });
 
-console.log('WebSocket server started on port 8080');
+console.log('WebSocket server started on port 8081');
