@@ -12,6 +12,7 @@
     "@pixi/react": "^8.0.2",
     "@react-three/drei": "^10.3.0",
     "@react-three/fiber": "^9.1.4",
+    "@react-three/postprocessing": "^3.0.4",
     "@types/pixi.js": "^4.8.9",
     "@types/three": "^0.177.0",
     "@types/ws": "^8.18.1",
