@@ -6,17 +6,18 @@ import { Controls } from '../components/UI';
 import { useUniverse, useViewportReset } from '../hooks';
 
 const Page = () => {
-  const { viewport, updateViewport } = useUniverse();
+  // Single source of truth for universe state
+  const universeState = useUniverse();
+  const { viewport, updateViewport } = universeState;
   const { resetViewport } = useViewportReset();
 
   const handleReset = useCallback(() => {
-    const newViewport = resetViewport(viewport);
-    updateViewport(newViewport);
-  }, [resetViewport, viewport, updateViewport]);
+    updateViewport(prev => resetViewport(prev));
+  }, [resetViewport, updateViewport]);
 
   return (
     <div className="universe-container">
-      <UniverseCanvas />
+      <UniverseCanvas universeState={universeState} />
       <Controls
         onReset={handleReset}
         zoom={viewport.zoom}

@@ -23,7 +23,7 @@ export const Controls: React.FC<ControlsProps> = ({
           <h3>Info</h3>
           <div className="info-item">
             <span>Zoom:</span>
-            <span>{zoom.toFixed(2)}x</span>
+            <span>{zoom.toFixed(5)}x</span>
           </div>
         </div>
       </div>

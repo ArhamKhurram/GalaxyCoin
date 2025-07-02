@@ -1,11 +1,22 @@
 import React, { useRef, useEffect, useCallback } from 'react';
-import { useUniverse } from '../../hooks/useUniverse';
 
 interface UniverseCanvasProps {
   className?: string;
+  universeState: {
+    viewport: any;
+    isDragging: boolean;
+    updateViewportSize: (width: number, height: number) => void;
+    handleDragStart: (x: number, y: number) => void;
+    handleDragMove: (x: number, y: number) => void;
+    handleDragEnd: () => void;
+    handleZoom: (delta: number, centerX: number, centerY: number) => void;
+  };
 }
 
-export const UniverseCanvas: React.FC<UniverseCanvasProps> = ({ className = '' }) => {
+export const UniverseCanvas: React.FC<UniverseCanvasProps> = ({ 
+  className = '', 
+  universeState 
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const {
     viewport,
@@ -15,7 +26,7 @@ export const UniverseCanvas: React.FC<UniverseCanvasProps> = ({ className = '' }
     handleDragMove,
     handleDragEnd,
     handleZoom,
-  } = useUniverse();
+  } = universeState;
 
   // Handle wheel events properly
   useEffect(() => {
@@ -182,4 +193,4 @@ const drawGrid = (ctx: CanvasRenderingContext2D, viewport: any) => {
     ctx.lineTo(right, y);
     ctx.stroke();
   }
-}; 
+};

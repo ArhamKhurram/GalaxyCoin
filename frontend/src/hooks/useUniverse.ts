@@ -24,10 +24,13 @@ export const useUniverse = () => {
     }));
   }, []);
 
-  // Update viewport state directly
-  const updateViewport = useCallback((newViewport: Viewport) => {
-    console.log('Updating viewport:', newViewport);
-    setViewport(newViewport);
+  const updateViewport = useCallback((newViewportOrUpdater: Viewport | ((prev: Viewport) => Viewport)) => {
+    if (typeof newViewportOrUpdater === 'function') {
+      setViewport(newViewportOrUpdater);
+    } else {
+      console.log('Updating viewport:', newViewportOrUpdater);
+      setViewport(newViewportOrUpdater);
+    }
   }, []);
 
   // Handle viewport dragging
@@ -61,17 +64,32 @@ export const useUniverse = () => {
   const handleZoom = useCallback((delta: number, centerX: number, centerY: number) => {
     setViewport(prev => {
       const zoomFactor = delta > 0 ? 1.1 : 0.9;
-      const newZoom = Math.max(0.1, Math.min(5, prev.zoom * zoomFactor));
+      const newZoom = Math.max(0.00001, Math.min(5, prev.zoom * zoomFactor));
+      
+      // Convert mouse position to world coordinates relative to canvas center
+      const worldX = (centerX - prev.width / 2) / prev.zoom + prev.x;
+      const worldY = (centerY - prev.height / 2) / prev.zoom + prev.y;
+      
+      // Calculate new viewport position to keep the world point under the mouse
+      const newX = worldX - (centerX - prev.width / 2) / newZoom;
+      const newY = worldY - (centerY - prev.height / 2) / newZoom;
 
-      // Calculate zoom center in world coordinates
-      const worldX = (centerX - prev.x) / prev.zoom;
-      const worldY = (centerY - prev.y) / prev.zoom;
+      console.log('Zoom:', {
+        oldZoom: prev.zoom,
+        newZoom,
+        centerX,
+        centerY,
+        worldX,
+        worldY,
+        newX,
+        newY
+      });
 
       return {
         ...prev,
         zoom: newZoom,
-        x: centerX - worldX * newZoom,
-        y: centerY - worldY * newZoom,
+        x: newX,
+        y: newY,
       };
     });
   }, []);
@@ -86,4 +104,4 @@ export const useUniverse = () => {
     handleDragEnd,
     handleZoom,
   };
-}; 
+};
